@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using TodoCleanArchitecture.Domain.Abstractions;
 using TodoCleanArchitecture.Domain.Entities;
 using TodoCleanArchitecture.Domain.Repositories;
 
 namespace TodoCleanArchitecture.Application.Features.Todos.CreateTodo
 {
-    public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommand>
+    public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommand, Result<string>>
     {
         private ITodoRepository _todoRepository;
         private IMapper _mapper;
@@ -16,15 +17,21 @@ namespace TodoCleanArchitecture.Application.Features.Todos.CreateTodo
             _mapper = mapper;
         }
 
-        public async Task Handle(CreateTodoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(CreateTodoCommand request, CancellationToken cancellationToken)
         {
             bool isExist = await _todoRepository.AnyAsync(p => p.Work == request.Work);
             if (isExist)
             {
-                throw new ArgumentException("This record alread exist");
+                //throw new ArgumentException("This record alread exist");
+                //throw new DublicateRecordWorkException();
+                //return new Result<string>(500, "This record alread exist");
+                return Result<string>.Fail(500, "This record alread exist");
             }
             Todo todo = _mapper.Map<Todo>(request);
             await _todoRepository.CreateAsync(todo, cancellationToken);
+            //return new Result<string>("Create is successful");
+            //return Result<string>.Success("Create is successful");
+            return "Create is successful";
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TodoCleanArchitecture.Domain.Entities
+﻿namespace TodoCleanArchitecture.Domain.Abstractions
 {
     public abstract class BaseEntity
     {

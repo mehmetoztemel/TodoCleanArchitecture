@@ -1,4 +1,6 @@
-﻿namespace TodoCleanArchitecture.Domain.Entities
+﻿using TodoCleanArchitecture.Domain.Abstractions;
+
+namespace TodoCleanArchitecture.Domain.Entities
 {
     public sealed class Todo : BaseEntity
     {

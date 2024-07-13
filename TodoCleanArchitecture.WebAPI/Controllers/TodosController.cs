@@ -28,8 +28,14 @@ namespace TodoCleanArchitecture.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTodoCommand request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request, cancellationToken);
-            return Created();
+            //var response = await _mediator.Send(request, cancellationToken);
+            //if (!response.IsSuccessful)
+            //{
+            //    return BadRequest(response);
+            //}
+            //return Ok(response);
+            var response = await _mediator.Send(request, cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpDelete("{id}")]

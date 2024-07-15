@@ -1,8 +1,10 @@
 using Bogus;
+using Microsoft.Extensions.Options;
 using TodoCleanArchitecture.Application;
 using TodoCleanArchitecture.Domain.Entities;
 using TodoCleanArchitecture.Domain.Repositories;
 using TodoCleanArchitecture.Infrastructure;
+using TodoCleanArchitecture.Infrastructure.Options;
 using TodoCleanArchitecture.WebAPI.Middlewares;
 
 
@@ -14,8 +16,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
+var connectionStringOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptionsMonitor<ConnectionStringOptions>>();
+
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(connectionStringOptions);
 
 builder.Services.AddExceptionHandler<MyExceptionHandler>().AddProblemDetails();
 

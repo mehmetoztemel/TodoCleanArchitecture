@@ -6,12 +6,8 @@ namespace TodoCleanArchitecture.Infrastructure.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
-
-            optionsBuilder.UseSqlServer("Server=EverBook; Database=TodoDB; User Id=sa; Password=sa.2016;MultipleActiveResultSets=True;TrustServerCertificate=true;");
-
-            base.OnConfiguring(optionsBuilder);
         }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

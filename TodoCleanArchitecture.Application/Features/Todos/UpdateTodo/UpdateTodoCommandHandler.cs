@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TodoCleanArchitecture.Application.Services;
 using TodoCleanArchitecture.Domain.Entities;
 using TodoCleanArchitecture.Domain.Repositories;
 
@@ -9,11 +10,12 @@ namespace TodoCleanArchitecture.Application.Features.Todos.UpdateTodo
     {
         private ITodoRepository _todoRepository;
         private IMapper _mapper;
-
-        public UpdateTodoCommandHandler(ITodoRepository todoRepository, IMapper mapper)
+        private ICacheService _cacheService;
+        public UpdateTodoCommandHandler(ITodoRepository todoRepository, IMapper mapper, ICacheService cacheService)
         {
             _todoRepository = todoRepository;
             _mapper = mapper;
+            _cacheService = cacheService;
         }
 
         public async Task Handle(UpdateTodoCommand request, CancellationToken cancellationToken)
@@ -31,6 +33,7 @@ namespace TodoCleanArchitecture.Application.Features.Todos.UpdateTodo
             _mapper.Map(todo, request);
 
             await _todoRepository.UpdateAsync(todo, cancellationToken);
+            _cacheService.Remove("todos");
         }
     }
 }
